@@ -16,7 +16,7 @@ const soldCountSpan = document.getElementById("sold-count");
 const modalCloseBtn = document.getElementById("modal-close");
 
 let currentBooks = [];
-let currentSummaryBookId = null;
+let hideSummaryTimeout = null;
 
 /* ====== LOAD DATA ====== */
 fetch("books.json")
@@ -31,15 +31,16 @@ fetch("books.json")
   });
 
 /* ====== RENDER SHELF ====== */
+
 function renderShelf(books) {
   shelfEl.innerHTML = "";
   const visibleBooks = books.filter((b) => b.status !== "sold");
   const booksPerRow = 4;
-  const minRows = 3; // always show at least 3 shelves
+  const minRows = 4; // always show at least 4 shelves
 
   let rowEl = null;
 
-  // --- place actual books ---
+  // place real books
   visibleBooks.forEach((book, index) => {
     if (index % booksPerRow === 0) {
       rowEl = document.createElement("div");
@@ -60,6 +61,7 @@ function renderShelf(books) {
 
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
+
     bookEl.addEventListener("click", () => {
       bookEl.classList.add("pickup");
       setTimeout(() => {
@@ -69,7 +71,7 @@ function renderShelf(books) {
     });
   });
 
-  // --- add empty rows so the shelf stacks downwards ---
+  // add extra empty rows so the shelf visually stacks downward
   const currentRows = shelfEl.children.length;
   if (currentRows < minRows) {
     for (let i = currentRows; i < minRows; i++) {
@@ -80,21 +82,20 @@ function renderShelf(books) {
   }
 }
 
+/* ====== SOLD COUNTER ====== */
+
 function updateSoldCount(books) {
   const soldCount = books.filter((b) => b.status === "sold").length;
   soldCountSpan.textContent = soldCount;
 }
 
 /* ====== SUMMARY POPUP ====== */
-let hideSummaryTimeout = null;
 
 function showSummary(book) {
   if (hideSummaryTimeout) {
     clearTimeout(hideSummaryTimeout);
     hideSummaryTimeout = null;
   }
-
-  currentSummaryBookId = book.id;
 
   summaryTitle.textContent = book.title;
   summaryPrice.textContent =
@@ -105,7 +106,6 @@ function showSummary(book) {
 }
 
 function closeSummary() {
-  currentSummaryBookId = null;
   summaryPopup.classList.add("hidden");
 }
 
@@ -130,7 +130,8 @@ summaryCloseBtn.addEventListener("click", () => {
   closeSummary();
 });
 
-/* ====== OPEN BOOK DETAIL (MODAL) ====== */
+/* ====== OPEN BOOK MODAL ====== */
+
 function openBookDetail(book) {
   closeSummary();
 
@@ -148,7 +149,6 @@ function openBookDetail(book) {
     buyLink.style.display = "none";
   }
 
-  // PHOTOS – any URL (Google Drive etc.)
   imagesContainer.innerHTML = "";
   (book.images || []).forEach((src) => {
     const img = document.createElement("img");
@@ -162,6 +162,7 @@ function openBookDetail(book) {
 }
 
 /* ====== CLOSE MODAL ====== */
+
 function closeModal() {
   bookModal.classList.add("hidden");
 }
