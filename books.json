@@ -6,10 +6,10 @@
       "price": 7,
       "currency": "SGD",
       "status": "available",
-      "summary": "Learning to become the creative force in your own life.",
+      "summary": "Learning to become the creative force in your own life instead of reacting to old patterns.",
       "condition": "Good used condition. Slight wear on cover, pages clean.",
       "images": [
-        "https://drive.google.com/uc?export=view&id=15GzXwHnU5tPnKg-E0BcmYqQ_xAt7FxIu"
+        "https://drive.google.com/uc?export=view&id=YOUR_FILE_ID_HERE"
       ],
       "googleFormUrl": "https://forms.gle/tCc7eWueQTcFyh488"
     },
@@ -19,8 +19,8 @@
       "price": 5,
       "currency": "SGD",
       "status": "sold",
-      "summary": "This one is already sold – just to increase the Books Sold count.",
-      "condition": "Fair condition.",
+      "summary": "Already sold – included only to increase the Books Sold number.",
+      "condition": "Fair, used condition.",
       "images": [],
       "googleFormUrl": "https://forms.gle/tCc7eWueQTcFyh488"
     }
