@@ -3,6 +3,7 @@ const summaryPopup = document.getElementById("summary-popup");
 const summaryTitle = document.getElementById("summary-title");
 const summaryPrice = document.getElementById("summary-price");
 const summaryText = document.getElementById("summary-text");
+const summaryCloseBtn = document.getElementById("summary-close");
 
 const bookModal = document.getElementById("book-modal");
 const imagesContainer = document.getElementById("book-images");
@@ -12,25 +13,12 @@ const detailCondition = document.getElementById("detail-condition");
 const detailSummary = document.getElementById("detail-summary");
 const buyLink = document.getElementById("buy-link");
 const soldCountSpan = document.getElementById("sold-count");
+const modalCloseBtn = document.getElementById("modal-close");
 
 let currentBooks = [];
-let hoveredBook = null;
+let currentSummaryBookId = null;
 
-// close helpers
-function closeSummary() {
-  summaryPopup.classList.add("hidden");
-  hoveredBook = null;
-}
-
-function closeModal() {
-  bookModal.classList.add("hidden");
-}
-
-function bookModalIsOpen() {
-  return !bookModal.classList.contains("hidden");
-}
-
-// Load books.json
+/* Load book data */
 fetch("books.json")
   .then((res) => res.json())
   .then((data) => {
@@ -38,16 +26,19 @@ fetch("books.json")
     renderShelf(currentBooks);
     updateSoldCount(currentBooks);
   })
-  .catch((err) => console.error("Error loading books.json", err));
+  .catch((err) => {
+    console.error("Error loading books.json", err);
+  });
 
-// Render shelf
+/* Render bookshelf: 4 books per row, skip books with status === "sold" */
 function renderShelf(books) {
-  const booksPerRow = 4;
-  const available = books.filter((b) => b.status === "available");
+  shelfEl.innerHTML = "";
+  const visibleBooks = books.filter((b) => b.status !== "sold");
 
+  const booksPerRow = 4;
   let rowEl = null;
 
-  available.forEach((book, index) => {
+  visibleBooks.forEach((book, index) => {
     if (index % booksPerRow === 0) {
       rowEl = document.createElement("div");
       rowEl.className = "shelf-row";
@@ -65,96 +56,116 @@ function renderShelf(books) {
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    bookEl.addEventListener("mouseenter", () => {
-      showSummaryPopup(book);
-    });
-
-    bookEl.addEventListener("mouseleave", () => {
-      if (!bookModalIsOpen()) {
-        closeSummary();
-      }
-    });
-
-    bookEl.addEventListener("click", () => {
-      openBookModal(book);
-    });
+    /* Hover → show summary popup */
+    bookEl.addEventListener("mouseenter", () => showSummary(book));
+    bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
+    /* Click → open book detail */
+    bookEl.addEventListener("click", () => openBookDetail(book));
   });
 }
 
-// Sold count
+/* Update Books Sold counter */
 function updateSoldCount(books) {
   const soldCount = books.filter((b) => b.status === "sold").length;
   soldCountSpan.textContent = soldCount;
 }
 
-// Summary popup
-function showSummaryPopup(book) {
-  hoveredBook = book;
+/* Show center summary popup */
+let hideSummaryTimeout = null;
+
+function showSummary(book) {
+  if (hideSummaryTimeout) {
+    clearTimeout(hideSummaryTimeout);
+    hideSummaryTimeout = null;
+  }
+
+  currentSummaryBookId = book.id;
 
   summaryTitle.textContent = book.title;
-  summaryPrice.textContent = book.price
-    ? `${book.currency || "SGD"} $${book.price}`
-    : "";
+  summaryPrice.textContent =
+    (book.currency || "SGD") + " " + (book.price != null ? book.price : "");
   summaryText.textContent = book.summary || "";
 
   summaryPopup.classList.remove("hidden");
 }
 
-// clicking summary (except close) opens modal
-summaryPopup.addEventListener("click", (e) => {
-  if (e.target.closest("[data-close-summary]")) return;
-  if (hoveredBook) openBookModal(hoveredBook);
+function closeSummary() {
+  currentSummaryBookId = null;
+  summaryPopup.classList.add("hidden");
+}
+
+function hideSummaryDelayed() {
+  hideSummaryTimeout = setTimeout(() => {
+    closeSummary();
+  }, 400);
+}
+
+summaryPopup.addEventListener("mouseenter", () => {
+  if (hideSummaryTimeout) {
+    clearTimeout(hideSummaryTimeout);
+    hideSummaryTimeout = null;
+  }
 });
 
-// Modal
-function openBookModal(book) {
+summaryPopup.addEventListener("mouseleave", () => {
+  hideSummaryDelayed();
+});
+
+summaryCloseBtn.addEventListener("click", () => {
+  closeSummary();
+});
+
+/* Open book detail modal */
+function openBookDetail(book) {
+  closeSummary();
+
+  // Title, price, condition, summary
   detailTitle.textContent = book.title;
-  detailPrice.textContent = book.price
-    ? `${book.currency || "SGD"} $${book.price}`
-    : "";
+  detailPrice.textContent =
+    (book.currency || "SGD") + " " + (book.price != null ? book.price : "");
   detailCondition.textContent = book.condition || "";
   detailSummary.textContent = book.summary || "";
 
+  // Buy link to Google Form
+  if (book.googleFormUrl) {
+    buyLink.href = book.googleFormUrl;
+    buyLink.style.display = "inline-block";
+  } else {
+    buyLink.href = "#";
+    buyLink.style.display = "none";
+  }
+
+  // Images from any URL (Google Drive, etc.)
   imagesContainer.innerHTML = "";
   (book.images || []).forEach((src) => {
     const img = document.createElement("img");
+    img.className = "book-photo";
     img.src = src;
     img.alt = book.title;
     imagesContainer.appendChild(img);
   });
 
-  if (book.googleFormUrl) {
-    buyLink.href = book.googleFormUrl;
-  } else {
-    buyLink.href = "https://forms.gle/tCc7eWueQTcFyh488";
-  }
-
   bookModal.classList.remove("hidden");
 }
 
-// close buttons
-document.querySelectorAll("[data-close-summary]").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeSummary();
-  });
+/* Close modal */
+function closeModal() {
+  bookModal.classList.add("hidden");
+}
+
+/* Click X button */
+modalCloseBtn.addEventListener("click", () => {
+  closeModal();
 });
 
-document.querySelectorAll("[data-close-modal]").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeModal();
-  });
-});
-
-// click overlay to close modal
+/* Click overlay background to close */
 bookModal.addEventListener("click", (e) => {
   if (e.target === bookModal) {
     closeModal();
   }
 });
 
-// Esc key
+/* ESC key closes everything */
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
