@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top bar: Telegram (left), Title (center), Sold count (right) -->
+  <!-- Top bar: Telegram (left) – Title (center) – Books Sold (right) -->
   <header class="top-bar">
     <a href="https://t.me/thelibrarist" target="_blank" class="top-link">
       Telegram Channel
@@ -15,61 +15,63 @@
 
     <h1 class="site-title">The Librarist</h1>
 
-    <div id="sold-box">
+    <span class="sold-badge">
       Books Sold: <span id="sold-count">0</span>
-    </div>
+    </span>
   </header>
 
-  <!-- Bookshelf -->
-  <main class="shelf-wrapper">
-    <div id="bookshelf" class="bookshelf">
-      <!-- Books will be injected here by script.js -->
+  <!-- Main content: bookshelf + overlays -->
+  <main class="main-area">
+    <div class="shelf-wrapper">
+      <div id="bookshelf" class="bookshelf">
+        <!-- Books will be created by script.js -->
+      </div>
     </div>
-  </main>
 
-  <!-- Hover / tap summary popup -->
-  <div id="summary-popup" class="summary-popup hidden">
-    <button class="close-btn" data-close-summary>&times;</button>
-    <div class="summary-header">
-      <span id="summary-title"></span>
-      <span id="summary-price"></span>
+    <!-- Yellow summary popup (hover) -->
+    <div id="summary-popup" class="summary-popup hidden">
+      <div class="summary-header">
+        <span id="summary-title"></span>
+        <span id="summary-price"></span>
+      </div>
+      <p id="summary-text"></p>
+      <p class="summary-note">(click book or this card for more details)</p>
+      <button id="summary-close" class="summary-close-btn">×</button>
     </div>
-    <p id="summary-text"></p>
-    <p class="summary-hint">(Click for more details…)</p>
-  </div>
 
-  <!-- Book detail modal (flip-open book) -->
-  <div id="book-modal" class="book-modal hidden">
-    <div class="book-modal-content">
-      <button class="close-btn" data-close-modal>&times;</button>
+    <!-- Open-book modal -->
+    <div id="book-modal" class="book-modal hidden">
+      <div class="book-modal-content">
+        <button id="modal-close" class="close-btn">×</button>
 
-      <div class="book-inner">
-        <!-- Left page: scrollable photos -->
-        <div class="book-page book-left">
-          <div id="book-images" class="image-scroller">
-            <!-- Images inserted by script.js -->
+        <div class="book-inner">
+          <!-- Left page: photos -->
+          <div class="book-page book-left">
+            <div id="book-images" class="image-scroller">
+              <!-- Images inserted by script.js -->
+            </div>
           </div>
-        </div>
 
-        <!-- Right page: details -->
-        <div class="book-page book-right">
-          <h2 id="detail-title"></h2>
-          <p id="detail-price" class="detail-price"></p>
-          <p id="detail-condition" class="detail-condition"></p>
-          <p id="detail-summary" class="detail-summary"></p>
+          <!-- Right page: details -->
+          <div class="book-page book-right">
+            <h2 id="detail-title"></h2>
+            <p id="detail-price" class="detail-price"></p>
+            <p id="detail-condition" class="detail-condition"></p>
+            <p id="detail-summary" class="detail-summary"></p>
 
-          <a id="buy-link" href="#" target="_blank" class="buy-btn">
-            Buy / Order this Book
-          </a>
+            <a id="buy-link" href="#" target="_blank" class="buy-btn">
+              Buy / Order this Book
+            </a>
 
-          <p class="book-note">
-            After you submit the Google Form and pay via PayNow,<br />
-            I will confirm your order personally via Telegram.
-          </p>
+            <p class="book-note">
+              After you submit the Google Form and pay via PayNow, I will confirm
+              your order personally via Telegram.
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 
   <script src="script.js"></script>
 </body>
