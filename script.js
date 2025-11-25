@@ -35,8 +35,11 @@ function renderShelf(books) {
   shelfEl.innerHTML = "";
   const visibleBooks = books.filter((b) => b.status !== "sold");
   const booksPerRow = 4;
+  const minRows = 3; // always show at least 3 shelves
+
   let rowEl = null;
 
+  // --- place actual books ---
   visibleBooks.forEach((book, index) => {
     if (index % booksPerRow === 0) {
       rowEl = document.createElement("div");
@@ -55,13 +58,9 @@ function renderShelf(books) {
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    /* Hover = summary */
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
-
-    /* Click = pick up then open */
     bookEl.addEventListener("click", () => {
-      // small take-out animation
       bookEl.classList.add("pickup");
       setTimeout(() => {
         bookEl.classList.remove("pickup");
@@ -69,6 +68,16 @@ function renderShelf(books) {
       }, 230);
     });
   });
+
+  // --- add empty rows so the shelf stacks downwards ---
+  const currentRows = shelfEl.children.length;
+  if (currentRows < minRows) {
+    for (let i = currentRows; i < minRows; i++) {
+      const emptyRow = document.createElement("div");
+      emptyRow.className = "shelf-row";
+      shelfEl.appendChild(emptyRow);
+    }
+  }
 }
 
 function updateSoldCount(books) {
