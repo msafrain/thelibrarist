@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "id": "sample-book",
+      "id": "The Path of Resistance by Robert Fritz",
       "title": "Sample Book Title",
       "price": 7,
       "currency": "SGD",
@@ -9,7 +9,7 @@
       "summary": "Short summary of the book for the popup on the shelf.",
       "condition": "Good used condition. Slight wear on cover, pages clean.",
       "images": [
-        "assets/books/path-of-resistance/IMG_1548.JPG"
+        "https://drive.google.com/file/d/15GzXwHnU5tPnKg-E0BcmYqQ_xAt7FxIu/view?usp=share_link"
       ],
       "googleFormUrl": "https://forms.gle/tCc7eWueQTcFyh488"
     },
