@@ -18,7 +18,7 @@ const modalCloseBtn = document.getElementById("modal-close");
 let currentBooks = [];
 let currentSummaryBookId = null;
 
-/* Load book data */
+/* ====== LOAD DATA ====== */
 fetch("books.json")
   .then((res) => res.json())
   .then((data) => {
@@ -30,11 +30,10 @@ fetch("books.json")
     console.error("Error loading books.json", err);
   });
 
-/* Render bookshelf: 4 books per row, skip books with status === "sold" */
+/* ====== RENDER SHELF ====== */
 function renderShelf(books) {
   shelfEl.innerHTML = "";
   const visibleBooks = books.filter((b) => b.status !== "sold");
-
   const booksPerRow = 4;
   let rowEl = null;
 
@@ -56,21 +55,28 @@ function renderShelf(books) {
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    /* Hover → show summary popup */
+    /* Hover = summary */
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
-    /* Click → open book detail */
-    bookEl.addEventListener("click", () => openBookDetail(book));
+
+    /* Click = pick up then open */
+    bookEl.addEventListener("click", () => {
+      // small take-out animation
+      bookEl.classList.add("pickup");
+      setTimeout(() => {
+        bookEl.classList.remove("pickup");
+        openBookDetail(book);
+      }, 230);
+    });
   });
 }
 
-/* Update Books Sold counter */
 function updateSoldCount(books) {
   const soldCount = books.filter((b) => b.status === "sold").length;
   soldCountSpan.textContent = soldCount;
 }
 
-/* Show center summary popup */
+/* ====== SUMMARY POPUP ====== */
 let hideSummaryTimeout = null;
 
 function showSummary(book) {
@@ -115,18 +121,16 @@ summaryCloseBtn.addEventListener("click", () => {
   closeSummary();
 });
 
-/* Open book detail modal */
+/* ====== OPEN BOOK DETAIL (MODAL) ====== */
 function openBookDetail(book) {
   closeSummary();
 
-  // Title, price, condition, summary
   detailTitle.textContent = book.title;
   detailPrice.textContent =
     (book.currency || "SGD") + " " + (book.price != null ? book.price : "");
   detailCondition.textContent = book.condition || "";
   detailSummary.textContent = book.summary || "";
 
-  // Buy link to Google Form
   if (book.googleFormUrl) {
     buyLink.href = book.googleFormUrl;
     buyLink.style.display = "inline-block";
@@ -135,7 +139,7 @@ function openBookDetail(book) {
     buyLink.style.display = "none";
   }
 
-  // Images from any URL (Google Drive, etc.)
+  // PHOTOS – any URL (Google Drive etc.)
   imagesContainer.innerHTML = "";
   (book.images || []).forEach((src) => {
     const img = document.createElement("img");
@@ -148,24 +152,21 @@ function openBookDetail(book) {
   bookModal.classList.remove("hidden");
 }
 
-/* Close modal */
+/* ====== CLOSE MODAL ====== */
 function closeModal() {
   bookModal.classList.add("hidden");
 }
 
-/* Click X button */
 modalCloseBtn.addEventListener("click", () => {
   closeModal();
 });
 
-/* Click overlay background to close */
 bookModal.addEventListener("click", (e) => {
   if (e.target === bookModal) {
     closeModal();
   }
 });
 
-/* ESC key closes everything */
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
