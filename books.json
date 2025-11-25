@@ -1,25 +1,25 @@
 {
   "books": [
     {
-      "id": "The Path of Resistance by Robert Fritz",
-      "title": "Sample Book Title",
+      "id": "path-of-least-resistance",
+      "title": "The Path of Least Resistance",
       "price": 7,
       "currency": "SGD",
       "status": "available",
-      "summary": "Short summary of the book for the popup on the shelf.",
+      "summary": "Learning to become the creative force in your own life.",
       "condition": "Good used condition. Slight wear on cover, pages clean.",
       "images": [
-        "https://drive.google.com/file/d/15GzXwHnU5tPnKg-E0BcmYqQ_xAt7FxIu/view?usp=share_link"
+        "https://drive.google.com/uc?export=view&id=15GzXwHnU5tPnKg-E0BcmYqQ_xAt7FxIu"
       ],
       "googleFormUrl": "https://forms.gle/tCc7eWueQTcFyh488"
     },
     {
-      "id": "another-book",
-      "title": "Another Book (Already Sold)",
+      "id": "example-sold",
+      "title": "Some Other Book (Sold)",
       "price": 5,
       "currency": "SGD",
       "status": "sold",
-      "summary": "This book is already sold; used for counting Books Sold.",
+      "summary": "This one is already sold – just to increase the Books Sold count.",
       "condition": "Fair condition.",
       "images": [],
       "googleFormUrl": "https://forms.gle/tCc7eWueQTcFyh488"
