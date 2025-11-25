@@ -7,13 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top bar: Telegram (left) – Title (center) – Books Sold (right) -->
+  <!-- Top bar -->
   <header class="top-bar">
     <a href="https://t.me/thelibrarist" target="_blank" class="top-link">
       Telegram Channel
     </a>
 
-    <h1 class="site-title">The Librarist</h1>
+    <div class="title-block">
+      <h1 class="site-title">The Librarist</h1>
+      <p class="site-subtitle">The Library of Used Books</p>
+    </div>
 
     <span class="sold-badge">
       Books Sold: <span id="sold-count">0</span>
@@ -24,19 +27,21 @@
   <main class="main-area">
     <div class="shelf-wrapper">
       <div id="bookshelf" class="bookshelf">
-        <!-- Books will be created by script.js -->
+        <!-- Shelf rows and books created by script.js -->
       </div>
     </div>
 
-    <!-- Yellow summary popup (hover) -->
+    <!-- Yellow summary popup -->
     <div id="summary-popup" class="summary-popup hidden">
+      <button id="summary-close" class="summary-close-btn">×</button>
       <div class="summary-header">
         <span id="summary-title"></span>
         <span id="summary-price"></span>
       </div>
       <p id="summary-text"></p>
-      <p class="summary-note">(click book or this card for more details)</p>
-      <button id="summary-close" class="summary-close-btn">×</button>
+      <p class="summary-note">
+        Tap the book or this card to see photos and details.
+      </p>
     </div>
 
     <!-- Open-book modal -->
@@ -64,7 +69,7 @@
             </a>
 
             <p class="book-note">
-              After you submit the Google Form and pay via PayNow, I will confirm
+              After submitting the form and paying via PayNow, I will confirm
               your order personally via Telegram.
             </p>
           </div>
