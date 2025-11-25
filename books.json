@@ -1,0 +1,29 @@
+{
+  "books": [
+    {
+      "id": "sample-book",
+      "title": "Sample Book Title",
+      "price": 7,
+      "currency": "SGD",
+      "status": "available", 
+      "summary": "Short summary of the book for the popup on the shelf.",
+      "condition": "Good used condition. Slight wear on cover, pages clean.",
+      "images": [
+        "assets/books/sample-book/1.jpg",
+        "assets/books/sample-book/2.jpg"
+      ],
+      "googleFormUrl": "https://forms.gle/YOUR_FORM_ID"
+    },
+    {
+      "id": "another-book",
+      "title": "Another Book (Already Sold)",
+      "price": 5,
+      "currency": "SGD",
+      "status": "sold",
+      "summary": "This book is already sold; used for counting Books Sold.",
+      "condition": "Fair condition.",
+      "images": [],
+      "googleFormUrl": "https://forms.gle/YOUR_FORM_ID"
+    }
+  ]
+}
