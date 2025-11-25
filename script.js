@@ -126,7 +126,7 @@ function openBookModal(book) {
   if (book.googleFormUrl) {
     buyLink.href = book.googleFormUrl;
   } else {
-    buyLink.href = "https://forms.gle/YOUR_DEFAULT_FORM_ID";
+    buyLink.href = "https://forms.gle/tCc7eWueQTcFyh488";
   }
 
   bookModal.classList.remove("hidden");
