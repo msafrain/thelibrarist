@@ -10,22 +10,23 @@
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  background: #ffffff; /* full white page */
+  background: #ffffff;
   color: #111;
 }
 
 /* ============= TOP BAR ============= */
-..top-bar {
+
+.top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
-  border-bottom: none; /* removed the line */
+  padding: 14px 24px;
   background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 50;
 }
+
 .top-link {
   font-size: 14px;
   text-decoration: none;
@@ -36,11 +37,21 @@ body {
   text-decoration: underline;
 }
 
+.title-block {
+  text-align: center;
+}
+
 .site-title {
   font-family: "Georgia", "Times New Roman", serif;
   font-size: 32px;
   font-weight: 700;
   letter-spacing: 1px;
+}
+
+.site-subtitle {
+  font-size: 13px;
+  color: #777;
+  margin-top: 2px;
 }
 
 .sold-badge {
@@ -52,6 +63,7 @@ body {
 }
 
 /* ============= MAIN AREA ============= */
+
 .main-area {
   min-height: calc(100vh - 60px);
   display: flex;
@@ -62,67 +74,71 @@ body {
 
 .shelf-wrapper {
   width: 100%;
-  max-width: 1100px;
+  max-width: 1200px;
   display: flex;
   justify-content: center;
 }
 
-/* Outer shelf frame */
+/* Outer bookshelf (full-width-ish) */
+
 .bookshelf {
   width: 100%;
-  max-width: 1000px;
-  background-color: #3a1605;
-  /* fake wood grain */
+  background-color: #2a1306;
+  /* dark mahogany-like texture */
   background-image:
     linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.06),
-      rgba(0, 0, 0, 0.25)
+      rgba(255, 255, 255, 0.04),
+      rgba(0, 0, 0, 0.4)
     ),
     repeating-linear-gradient(
       0deg,
-      rgba(255, 255, 255, 0.04) 0px,
-      rgba(255, 255, 255, 0.04) 2px,
-      rgba(0, 0, 0, 0.15) 2px,
-      rgba(0, 0, 0, 0.15) 4px
+      rgba(255, 255, 255, 0.06) 0px,
+      rgba(255, 255, 255, 0.06) 3px,
+      rgba(0, 0, 0, 0.3) 3px,
+      rgba(0, 0, 0, 0.3) 6px
     );
   background-blend-mode: soft-light;
-  border: 18px solid #7b3b0f; /* outer wooden frame */
+  border: 18px solid #5b2b0b;
   border-radius: 16px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   position: relative;
   max-height: 80vh;
   overflow-y: auto;
+  padding: 20px 24px 28px;
 }
 
-/* One horizontal shelf row */
+/* Individual shelf row */
+
 .shelf-row {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-end;
   min-height: 210px;
-  padding: 24px 16px;
+  padding: 26px 10px 24px;
   position: relative;
 }
 
-/* Wooden plank between rows */
+/* wooden plank between rows */
+
 .shelf-row:not(:last-child)::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -10px;
-  height: 14px;
-  background-color: #7b3b0f;
+  bottom: -12px;
+  height: 16px;
+  background-color: #5b2b0b;
   background-image: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.15),
-    rgba(0, 0, 0, 0.35)
+    rgba(255, 255, 255, 0.18),
+    rgba(0, 0, 0, 0.5)
   );
   opacity: 0.95;
 }
 
 /* ============= BOOKS ON SHELF ============= */
+
 .book {
   width: 120px;
   height: 200px;
@@ -132,18 +148,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.8);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  padding: 6px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.9);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
 }
 
 /* hover */
+
 .book:hover {
   transform: translateY(-6px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 1);
 }
 
 /* pick-up animation (on click) */
+
 .book.pickup {
   animation: bookPickup 0.25s ease forwards;
 }
@@ -153,21 +171,24 @@ body {
     transform: translateY(0) scale(1);
   }
   100% {
-    transform: translateY(-30px) scale(1.1);
+    transform: translateY(-28px) scale(1.08);
   }
 }
 
-/* Horizontal title on the spine */
+/* Vertical spine title */
+
 .book-title {
   color: #f6a623;
   font-family: "Georgia", serif;
   font-size: 15px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 1px;
   text-align: center;
-  line-height: 1.2;
-  writing-mode: horizontal-tb; /* horizontal, not vertical */
 }
 
-/* ============= SUMMARY POPUP (YELLOW CARD) ============= */
+/* ============= SUMMARY POPUP ============= */
+
 .summary-popup {
   position: fixed;
   left: 50%;
@@ -211,10 +232,11 @@ body {
 }
 
 /* ============= OPEN BOOK MODAL ============= */
+
 .book-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,16 +247,16 @@ body {
   display: none;
 }
 
-/* Container that animates like a book opening */
 .book-modal-content {
   background: transparent;
-  max-width: 950px;
+  max-width: 960px;
   width: 96%;
   position: relative;
   animation: bookOpen 0.35s ease forwards;
 }
 
-/* open-book animation */
+/* book opening animation */
+
 @keyframes bookOpen {
   0% {
     transform: scale(0.3) rotateY(-40deg);
@@ -247,6 +269,7 @@ body {
 }
 
 /* Close button */
+
 .close-btn {
   position: absolute;
   right: -8px;
@@ -258,19 +281,21 @@ body {
   cursor: pointer;
 }
 
-/* Actual book shape (two pages) – looks like your sketch */
+/* Actual book shape */
+
 .book-inner {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  background: #ffffff;
+  background: #fdf1d5; /* cream pages */
   border-radius: 8px;
   border: 4px solid #000000;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
   position: relative;
   overflow: hidden;
 }
 
-/* spine lines on left edge */
+/* subtle spine lines on left side */
+
 .book-inner::before {
   content: "";
   position: absolute;
@@ -280,25 +305,26 @@ body {
   width: 10px;
   background-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.25) 1px,
+    rgba(0, 0, 0, 0.3) 1px,
     transparent 1px
   );
   background-size: 4px 100%;
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
-/* each page */
+/* pages */
+
 .book-page {
   padding: 24px 26px;
   position: relative;
 }
 
-/* left page vertical edge */
 .book-left {
-  border-right: 2px solid #ccc;
+  border-right: 2px solid #dcc194;
 }
 
-/* right-page page edges like your dotted lines */
+/* page edges on right side */
+
 .book-right::after {
   content: "";
   position: absolute;
@@ -308,14 +334,15 @@ body {
   height: 100%;
   background-image: linear-gradient(
     to left,
-    rgba(0, 0, 0, 0.2) 2px,
+    rgba(0, 0, 0, 0.25) 2px,
     transparent 2px
   );
   background-size: 6px 100%;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
-/* Scrollable photos on left page */
+/* photos scroller */
+
 .image-scroller {
   height: 100%;
   overflow-y: auto;
@@ -331,7 +358,8 @@ body {
   border: 1px solid #ccc;
 }
 
-/* Text on right page */
+/* right-page content */
+
 #detail-title {
   font-family: "Georgia", serif;
   font-size: 22px;
@@ -356,6 +384,7 @@ body {
 }
 
 /* Buy button */
+
 .buy-btn {
   display: inline-block;
   padding: 10px 20px;
@@ -377,21 +406,38 @@ body {
 }
 
 /* ============= MOBILE ============= */
+
 @media (max-width: 768px) {
+  .top-bar {
+    padding: 10px 12px;
+  }
+
+  .site-title {
+    font-size: 24px;
+  }
+
+  .shelf-wrapper {
+    max-width: 100%;
+  }
+
   .bookshelf {
+    padding: 16px 10px 22px;
+    border-width: 14px;
     max-height: none;
   }
 
   .shelf-row {
-    min-height: 190px;
-    padding: 18px 10px;
-    overflow-x: auto;
+    min-height: 200px;
+    padding: 18px 8px 18px;
     justify-content: flex-start;
     gap: 16px;
+    flex-wrap: wrap;
   }
 
+  /* 2 books per row on mobile */
   .book {
-    flex: 0 0 110px;
+    flex: 0 0 calc(50% - 16px);
+    height: 190px;
   }
 
   .book-inner {
