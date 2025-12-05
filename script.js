@@ -19,8 +19,7 @@ let currentBooks = [];
 let hideSummaryTimeout = null;
 let currentSummaryBook = null;
 
-/* LOAD DATA */
-
+/* ====== LOAD DATA ====== */
 fetch("books.json")
   .then((res) => res.json())
   .then((data) => {
@@ -32,13 +31,13 @@ fetch("books.json")
     console.error("Error loading books.json", err);
   });
 
-/* RENDER SHELF */
+/* ====== RENDER SHELF ====== */
 
 function renderShelf(books) {
   shelfEl.innerHTML = "";
   const visibleBooks = books.filter((b) => b.status !== "sold");
   const booksPerRow = 4;
-  const minRows = 3;
+  const minRows = 4; // visually: 4 shelves minimum
 
   let rowEl = null;
 
@@ -56,21 +55,14 @@ function renderShelf(books) {
     const titleEl = document.createElement("div");
     titleEl.className = "book-title";
     titleEl.textContent = book.title;
-
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    // hover / touch summary
+    // hover summary
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
-    bookEl.addEventListener("touchstart", () => showSummary(book), {
-      passive: true
-    });
-    bookEl.addEventListener("touchend", () => hideSummaryDelayed(), {
-      passive: true
-    });
 
-    // click to open detail
+    // click → protrude + open book
     bookEl.addEventListener("click", () => {
       bookEl.classList.add("pickup");
       setTimeout(() => {
@@ -80,7 +72,7 @@ function renderShelf(books) {
     });
   });
 
-  // ensure at least minRows shelves
+  // add empty shelves to extend the bookcase visually
   const currentRows = shelfEl.children.length;
   if (currentRows < minRows) {
     for (let i = currentRows; i < minRows; i++) {
@@ -91,14 +83,14 @@ function renderShelf(books) {
   }
 }
 
-/* SOLD COUNT */
+/* ====== SOLD COUNTER ====== */
 
 function updateSoldCount(books) {
   const soldCount = books.filter((b) => b.status === "sold").length;
   soldCountSpan.textContent = soldCount;
 }
 
-/* SUMMARY POPUP */
+/* ====== SUMMARY POPUP ====== */
 
 function showSummary(book) {
   if (hideSummaryTimeout) {
@@ -121,7 +113,9 @@ function closeSummary() {
 }
 
 function hideSummaryDelayed() {
-  hideSummaryTimeout = setTimeout(closeSummary, 400);
+  hideSummaryTimeout = setTimeout(() => {
+    closeSummary();
+  }, 400);
 }
 
 summaryPopup.addEventListener("mouseenter", () => {
@@ -133,18 +127,20 @@ summaryPopup.addEventListener("mouseenter", () => {
 
 summaryPopup.addEventListener("mouseleave", hideSummaryDelayed);
 
-// click card opens book
-summaryPopup.addEventListener("click", () => {
-  if (currentSummaryBook) openBookDetail(currentSummaryBook);
-});
-
-// close button just closes
+// close button
 summaryCloseBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   closeSummary();
 });
 
-/* OPEN BOOK MODAL */
+// click on the yellow card → open the same book
+summaryPopup.addEventListener("click", () => {
+  if (currentSummaryBook) {
+    openBookDetail(currentSummaryBook);
+  }
+});
+
+/* ====== OPEN BOOK MODAL ====== */
 
 function openBookDetail(book) {
   closeSummary();
@@ -164,8 +160,9 @@ function openBookDetail(book) {
   }
 
   imagesContainer.innerHTML = "";
-  if (book.images && book.images.length > 0) {
-    book.images.forEach((src) => {
+  const images = book.images || [];
+  if (images.length > 0) {
+    images.forEach((src) => {
       const img = document.createElement("img");
       img.className = "book-photo";
       img.src = src;
@@ -175,14 +172,14 @@ function openBookDetail(book) {
   } else {
     const p = document.createElement("p");
     p.className = "no-photo";
-    p.textContent = "No photo added yet.";
+    p.textContent = "No photos added for this book yet.";
     imagesContainer.appendChild(p);
   }
 
   bookModal.classList.remove("hidden");
 }
 
-/* CLOSE MODAL */
+/* ====== CLOSE MODAL ====== */
 
 function closeModal() {
   bookModal.classList.add("hidden");
@@ -191,7 +188,9 @@ function closeModal() {
 modalCloseBtn.addEventListener("click", closeModal);
 
 bookModal.addEventListener("click", (e) => {
-  if (e.target === bookModal) closeModal();
+  if (e.target === bookModal) {
+    closeModal();
+  }
 });
 
 document.addEventListener("keydown", (e) => {
