@@ -140,6 +140,11 @@ body {
   padding: 6px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.9);
   transition: transform 0.16s ease, box-shadow 0.16s ease;
+
+  /* 👇 NEW: let the book overlap downward so it “sits” on the plank */
+  margin-bottom: -40px;
+  position: relative;
+  z-index: 1;
 }
 
 /* hover */
@@ -427,6 +432,9 @@ body {
   .book {
     flex: 0 0 calc(50% - 16px);
     height: 190px;
+
+    /* slightly less offset on mobile */
+    margin-bottom: -30px;
   }
 
   .book-inner {
