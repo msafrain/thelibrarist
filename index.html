@@ -7,27 +7,38 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top bar -->
+  <!-- Top: title + subtitle only -->
   <header class="top-bar">
-    <a href="https://t.me/thelibrarist" target="_blank" class="top-link">
-      Telegram Channel
-    </a>
-
     <div class="title-block">
       <h1 class="site-title">The Librarist</h1>
-      <p class="site-subtitle">The Library of Used Books</p>
+      <p class="site-subtitle">The library of used books</p>
     </div>
-
-    <span class="sold-badge">
-      Books Sold: <span id="sold-count">0</span>
-    </span>
   </header>
 
   <!-- Main content: bookshelf + overlays -->
   <main class="main-area">
     <div class="shelf-wrapper">
-      <div id="bookshelf" class="bookshelf">
-        <!-- Shelf rows and books created by script.js -->
+      <!-- Wooden / photo bookshelf frame -->
+      <div class="bookshelf-frame">
+        <!-- Shelf top labels inside the shelf -->
+        <div class="shelf-top">
+          <a
+            href="https://t.me/thelibrarist"
+            target="_blank"
+            class="shelf-telegram"
+          >
+            Telegram
+          </a>
+
+          <span class="shelf-sold">
+            Sold: <span id="sold-count">0</span>
+          </span>
+        </div>
+
+        <!-- Actual shelves and books (created by script.js) -->
+        <div id="bookshelf">
+          <!-- shelf rows injected here -->
+        </div>
       </div>
     </div>
 
