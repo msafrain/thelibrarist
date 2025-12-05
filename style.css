@@ -19,22 +19,12 @@ body {
 .top-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 14px 24px;
+  justify-content: center;
+  padding: 18px 16px 8px;
   background: #ffffff;
   position: sticky;
   top: 0;
   z-index: 50;
-}
-
-.top-link {
-  font-size: 14px;
-  text-decoration: none;
-  color: #444;
-}
-
-.top-link:hover {
-  text-decoration: underline;
 }
 
 .title-block {
@@ -51,25 +41,17 @@ body {
 .site-subtitle {
   font-size: 13px;
   color: #777;
-  margin-top: 2px;
-}
-
-.sold-badge {
-  background: #f1c85b;
-  color: #4a2608;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 14px;
+  margin-top: 4px;
 }
 
 /* ============= MAIN AREA ============= */
 
 .main-area {
-  min-height: calc(100vh - 60px);
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 32px 16px 40px;
+  padding: 16px 16px 40px;
 }
 
 .shelf-wrapper {
@@ -79,33 +61,55 @@ body {
   justify-content: center;
 }
 
-/* Outer bookshelf (full-width-ish) */
+/* Outer bookshelf (frame) */
 
-.bookshelf {
+.bookshelf-frame {
   width: 100%;
-  background-color: #2a1306;
-  /* dark mahogany-like texture */
-  background-image:
-    linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.04),
-      rgba(0, 0, 0, 0.4)
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(255, 255, 255, 0.06) 0px,
-      rgba(255, 255, 255, 0.06) 3px,
-      rgba(0, 0, 0, 0.3) 3px,
-      rgba(0, 0, 0, 0.3) 6px
-    );
-  background-blend-mode: soft-light;
+  position: relative;
   border: 18px solid #5b2b0b;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  position: relative;
-  max-height: 80vh;
-  overflow-y: auto;
-  padding: 20px 24px 28px;
+  padding: 16px 24px 28px;
+  min-height: 70vh; /* extend towards bottom even with few books */
+
+  /* real bookshelf image – replace 'bookshelf.jpg' with your actual file */
+  background-color: #2a1306;
+  background-image: url("bookshelf.jpg");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+}
+
+/* Shelf header labels inside the frame */
+
+.shelf-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: #f9e1b5;
+}
+
+.shelf-telegram {
+  text-decoration: none;
+  color: inherit;
+}
+
+.shelf-telegram:hover {
+  text-decoration: underline;
+}
+
+.shelf-sold {
+  background: rgba(0, 0, 0, 0.45);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* The container that script.js fills with rows */
+
+#bookshelf {
+  width: 100%;
 }
 
 /* Individual shelf row */
@@ -119,7 +123,7 @@ body {
   position: relative;
 }
 
-/* wooden plank between rows */
+/* wooden plank between rows (sits on top of background bookcase image) */
 
 .shelf-row:not(:last-child)::after {
   content: "";
@@ -128,13 +132,12 @@ body {
   right: 0;
   bottom: -12px;
   height: 16px;
-  background-color: #5b2b0b;
+  background-color: rgba(91, 43, 11, 0.95);
   background-image: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.18),
     rgba(0, 0, 0, 0.5)
   );
-  opacity: 0.95;
 }
 
 /* ============= BOOKS ON SHELF ============= */
@@ -175,16 +178,16 @@ body {
   }
 }
 
-/* Vertical spine title */
+/* Horizontal spine title */
 
 .book-title {
   color: #f6a623;
   font-family: "Georgia", serif;
   font-size: 15px;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
   letter-spacing: 1px;
   text-align: center;
+  line-height: 1.2;
+  /* remove vertical writing mode */
 }
 
 /* ============= SUMMARY POPUP ============= */
@@ -409,21 +412,17 @@ body {
 
 @media (max-width: 768px) {
   .top-bar {
-    padding: 10px 12px;
+    padding: 12px 12px 6px;
   }
 
   .site-title {
     font-size: 24px;
   }
 
-  .shelf-wrapper {
-    max-width: 100%;
-  }
-
-  .bookshelf {
-    padding: 16px 10px 22px;
+  .bookshelf-frame {
+    padding: 12px 10px 20px;
     border-width: 14px;
-    max-height: none;
+    min-height: 60vh;
   }
 
   .shelf-row {
