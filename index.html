@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Title only -->
+  <!-- Top: centered title + subtitle -->
   <header class="top-bar">
     <div class="title-block">
       <h1 class="site-title">The Librarist</h1>
@@ -15,12 +15,15 @@
     </div>
   </header>
 
-  <!-- Main content: shelf header + shelf + overlays -->
   <main class="main-area">
     <div class="shelf-wrapper">
-      <!-- Row ABOVE the shelf (Telegram left, Sold right) -->
+      <!-- This row is OUTSIDE the shelf box, like your mock -->
       <div class="shelf-header-row">
-        <a href="https://t.me/thelibrarist" target="_blank" class="shelf-header-left">
+        <a
+          href="https://t.me/thelibrarist"
+          target="_blank"
+          class="shelf-header-left"
+        >
           Telegram
         </a>
 
@@ -29,15 +32,15 @@
         </span>
       </div>
 
-      <!-- Actual bookshelf box -->
+      <!-- The bookshelf rectangle -->
       <div class="bookshelf-frame">
         <div id="bookshelf" class="bookshelf">
-          <!-- shelf rows + books injected by script.js -->
+          <!-- rows & books injected by script.js -->
         </div>
       </div>
     </div>
 
-    <!-- Yellow summary popup -->
+    <!-- Yellow summary hover popup -->
     <div id="summary-popup" class="summary-popup hidden">
       <button id="summary-close" class="summary-close-btn">×</button>
       <div class="summary-header">
@@ -50,9 +53,37 @@
       </p>
     </div>
 
-    <!-- Open-book modal (keep yours as-is below this) -->
+    <!-- Open-book modal -->
     <div id="book-modal" class="book-modal hidden">
-      <!-- ... (rest of your modal markup stays exactly the same) ... -->
+      <div class="book-modal-content">
+        <button id="modal-close" class="close-btn">×</button>
+
+        <div class="book-inner">
+          <!-- Left page: photos -->
+          <div class="book-page book-left">
+            <div id="book-images" class="image-scroller">
+              <!-- images go here -->
+            </div>
+          </div>
+
+          <!-- Right page: details -->
+          <div class="book-page book-right">
+            <h2 id="detail-title"></h2>
+            <p id="detail-price" class="detail-price"></p>
+            <p id="detail-condition" class="detail-condition"></p>
+            <p id="detail-summary" class="detail-summary"></p>
+
+            <a id="buy-link" href="#" target="_blank" class="buy-btn">
+              Buy / Order this Book
+            </a>
+
+            <p class="book-note">
+              After submitting the form and paying via PayNow, I will confirm
+              your order personally via Telegram.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
