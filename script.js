@@ -17,9 +17,9 @@ const modalCloseBtn = document.getElementById("modal-close");
 
 let currentBooks = [];
 let hideSummaryTimeout = null;
-let currentSummaryBook = null;
+let lastSummaryBook = null;
 
-/* ====== LOAD DATA ====== */
+/* ====== LOAD DATA (books.json) ====== */
 fetch("books.json")
   .then((res) => res.json())
   .then((data) => {
@@ -35,12 +35,14 @@ fetch("books.json")
 
 function renderShelf(books) {
   shelfEl.innerHTML = "";
+
   const visibleBooks = books.filter((b) => b.status !== "sold");
   const booksPerRow = 4;
-  const minRows = 4; // visually: 4 shelves minimum
+  const minRows = 4; // always show at least 4 shelves visually
 
   let rowEl = null;
 
+  // Place actual books on shelves
   visibleBooks.forEach((book, index) => {
     if (index % booksPerRow === 0) {
       rowEl = document.createElement("div");
@@ -55,14 +57,15 @@ function renderShelf(books) {
     const titleEl = document.createElement("div");
     titleEl.className = "book-title";
     titleEl.textContent = book.title;
+
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    // hover summary
+    // Hover / scroll-over to show yellow summary popup
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
 
-    // click → protrude + open book
+    // Click to protrude & open book detail
     bookEl.addEventListener("click", () => {
       bookEl.classList.add("pickup");
       setTimeout(() => {
@@ -72,7 +75,7 @@ function renderShelf(books) {
     });
   });
 
-  // add empty shelves to extend the bookcase visually
+  // Add extra empty rows so shelf visually continues downward
   const currentRows = shelfEl.children.length;
   if (currentRows < minRows) {
     for (let i = currentRows; i < minRows; i++) {
@@ -98,7 +101,7 @@ function showSummary(book) {
     hideSummaryTimeout = null;
   }
 
-  currentSummaryBook = book;
+  lastSummaryBook = book;
 
   summaryTitle.textContent = book.title;
   summaryPrice.textContent =
@@ -118,6 +121,7 @@ function hideSummaryDelayed() {
   }, 400);
 }
 
+// Keep popup open if mouse is on it
 summaryPopup.addEventListener("mouseenter", () => {
   if (hideSummaryTimeout) {
     clearTimeout(hideSummaryTimeout);
@@ -125,18 +129,18 @@ summaryPopup.addEventListener("mouseenter", () => {
   }
 });
 
-summaryPopup.addEventListener("mouseleave", hideSummaryDelayed);
+summaryPopup.addEventListener("mouseleave", () => {
+  hideSummaryDelayed();
+});
 
-// close button
-summaryCloseBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
+summaryCloseBtn.addEventListener("click", () => {
   closeSummary();
 });
 
-// click on the yellow card → open the same book
+// Clicking the yellow summary card opens the book (Design #2)
 summaryPopup.addEventListener("click", () => {
-  if (currentSummaryBook) {
-    openBookDetail(currentSummaryBook);
+  if (lastSummaryBook) {
+    openBookDetail(lastSummaryBook);
   }
 });
 
@@ -159,22 +163,15 @@ function openBookDetail(book) {
     buyLink.style.display = "none";
   }
 
+  // Left page photos
   imagesContainer.innerHTML = "";
-  const images = book.images || [];
-  if (images.length > 0) {
-    images.forEach((src) => {
-      const img = document.createElement("img");
-      img.className = "book-photo";
-      img.src = src;
-      img.alt = book.title;
-      imagesContainer.appendChild(img);
-    });
-  } else {
-    const p = document.createElement("p");
-    p.className = "no-photo";
-    p.textContent = "No photos added for this book yet.";
-    imagesContainer.appendChild(p);
-  }
+  (book.images || []).forEach((src) => {
+    const img = document.createElement("img");
+    img.className = "book-photo";
+    img.src = src;
+    img.alt = book.title;
+    imagesContainer.appendChild(img);
+  });
 
   bookModal.classList.remove("hidden");
 }
@@ -185,14 +182,18 @@ function closeModal() {
   bookModal.classList.add("hidden");
 }
 
-modalCloseBtn.addEventListener("click", closeModal);
+modalCloseBtn.addEventListener("click", () => {
+  closeModal();
+});
 
+// Click outside the book to close
 bookModal.addEventListener("click", (e) => {
   if (e.target === bookModal) {
     closeModal();
   }
 });
 
+// ESC closes modal + summary
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
