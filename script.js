@@ -17,6 +17,7 @@ const modalCloseBtn = document.getElementById("modal-close");
 
 let currentBooks = [];
 let hideSummaryTimeout = null;
+let currentSummaryBook = null; // track which book is in the popup
 
 /* ====== LOAD DATA ====== */
 fetch("books.json")
@@ -59,9 +60,19 @@ function renderShelf(books) {
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
+    // Desktop hover
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
 
+    // Touch devices – treat touch like hover
+    bookEl.addEventListener("touchstart", () => showSummary(book), {
+      passive: true,
+    });
+    bookEl.addEventListener("touchend", () => hideSummaryDelayed(), {
+      passive: true,
+    });
+
+    // Click to "pick up" then open
     bookEl.addEventListener("click", () => {
       bookEl.classList.add("pickup");
       setTimeout(() => {
@@ -97,6 +108,8 @@ function showSummary(book) {
     hideSummaryTimeout = null;
   }
 
+  currentSummaryBook = book;
+
   summaryTitle.textContent = book.title;
   summaryPrice.textContent =
     (book.currency || "SGD") + " " + (book.price != null ? book.price : "");
@@ -126,7 +139,16 @@ summaryPopup.addEventListener("mouseleave", () => {
   hideSummaryDelayed();
 });
 
-summaryCloseBtn.addEventListener("click", () => {
+// Clicking the yellow card opens the book
+summaryPopup.addEventListener("click", () => {
+  if (currentSummaryBook) {
+    openBookDetail(currentSummaryBook);
+  }
+});
+
+// Close button only closes, doesn't trigger the open-book click
+summaryCloseBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
   closeSummary();
 });
 
@@ -171,12 +193,14 @@ modalCloseBtn.addEventListener("click", () => {
   closeModal();
 });
 
+// Click outside the open book closes it
 bookModal.addEventListener("click", (e) => {
   if (e.target === bookModal) {
     closeModal();
   }
 });
 
+// ESC closes both modal and summary
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
