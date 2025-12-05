@@ -151,8 +151,8 @@ body {
   position: relative;
   z-index: 1;               /* book sits ABOVE the plank */
 
-  /* 👇 THIS is the only real change: sink books slightly so they sit on the plank */
-  margin-bottom: -10px;
+  /* 👇 NEW LINE: make the book sit on the shelf plank */
+  margin-bottom: -12px;
 }
 
 /* hover */
