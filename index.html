@@ -1,84 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>The Librarist</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- Centered title + subtitle -->
-  <header class="hero">
-    <h1 class="site-title">The Librarist</h1>
-    <p class="site-subtitle">The library of used books</p>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Librarist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- PAGE HEADER: Title + Subtitle (Design #1) -->
+    <header class="page-header">
+      <h1 class="site-title">The Librarist</h1>
+      <p class="site-subtitle">The library of used books</p>
+    </header>
 
-  <main class="main-area">
-    <section class="shelf-section">
-      <!-- Row ABOVE the shelf (Telegram left, Sold right) -->
-      <div class="shelf-top-row">
-        <a href="https://t.me/thelibrarist" target="_blank" class="shelf-telegram">
-          Telegram
-        </a>
+    <!-- MAIN AREA: Telegram + Sold on top of the shelf, not inside -->
+    <main class="main-area">
+      <div class="shelf-wrapper">
+        <!-- Telegram + Sold aligned to top left/right of shelf (Design #1 & #2) -->
+        <div class="shelf-top-info">
+          <a
+            href="https://t.me/thelibrarist"
+            target="_blank"
+            class="shelf-link"
+          >
+            Telegram
+          </a>
 
-        <span class="shelf-sold">
-          Sold: <span id="sold-count">0</span>
-        </span>
+          <span class="shelf-sold">
+            Sold: <span id="sold-count">0</span>
+          </span>
+        </div>
+
+        <!-- BOOKSHELF: shelves extend to bottom, unlimited rows visually -->
+        <div id="bookshelf" class="bookshelf">
+          <!-- Rows & books are injected by script.js -->
+        </div>
       </div>
 
-      <!-- Bookshelf itself -->
-      <div class="bookshelf" id="bookshelf">
-        <!-- shelf rows + books are injected by script.js -->
+      <!-- YELLOW SUMMARY POPUP (Design #2) -->
+      <div id="summary-popup" class="summary-popup hidden">
+        <button id="summary-close" class="summary-close-btn">×</button>
+        <div class="summary-header">
+          <span id="summary-title"></span>
+          <span id="summary-price"></span>
+        </div>
+        <p id="summary-text"></p>
+        <p class="summary-note">
+          Tap the book or this card to see photos and details.
+        </p>
       </div>
-    </section>
 
-    <!-- Yellow summary popup -->
-    <div id="summary-popup" class="summary-popup hidden">
-      <button id="summary-close" class="summary-close-btn">×</button>
-      <div class="summary-header">
-        <span id="summary-title"></span>
-        <span id="summary-price"></span>
-      </div>
-      <p id="summary-text"></p>
-      <p class="summary-note">
-        Tap the book or this card to see photos and more details.
-      </p>
-    </div>
+      <!-- OPEN BOOK MODAL (Design #3) -->
+      <div id="book-modal" class="book-modal hidden">
+        <div class="book-modal-content">
+          <button id="modal-close" class="close-btn">×</button>
 
-    <!-- Open-book modal -->
-    <div id="book-modal" class="book-modal hidden">
-      <div class="book-modal-content">
-        <button id="modal-close" class="close-btn">×</button>
-
-        <div class="book-inner">
-          <!-- Left page: photos -->
-          <div class="book-page book-left">
-            <div id="book-images" class="image-scroller">
-              <!-- Images inserted by script.js -->
+          <div class="book-inner">
+            <!-- Left page: scrollable photos -->
+            <div class="book-page book-left">
+              <div id="book-images" class="image-scroller">
+                <!-- Images inserted by script.js -->
+              </div>
             </div>
-          </div>
 
-          <!-- Right page: details -->
-          <div class="book-page book-right">
-            <h2 id="detail-title"></h2>
-            <p id="detail-price" class="detail-price"></p>
-            <p id="detail-condition" class="detail-condition"></p>
-            <p id="detail-summary" class="detail-summary"></p>
+            <!-- Right page: details -->
+            <div class="book-page book-right">
+              <h2 id="detail-title"></h2>
+              <p id="detail-price" class="detail-price"></p>
+              <p id="detail-condition" class="detail-condition"></p>
+              <p id="detail-summary" class="detail-summary"></p>
 
-            <a id="buy-link" href="#" target="_blank" class="buy-btn">
-              Buy / Order this Book
-            </a>
+              <a
+                id="buy-link"
+                href="#"
+                target="_blank"
+                class="buy-btn"
+              >
+                Buy / Order this Book
+              </a>
 
-            <p class="book-note">
-              After submitting the form and paying via PayNow, I will confirm
-              your order personally via Telegram.
-            </p>
+              <p class="book-note">
+                After submitting the form and paying via PayNow, I will confirm
+                your order personally via Telegram.
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
