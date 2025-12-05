@@ -16,6 +16,7 @@ body {
 
 /* ============= TOP BAR ============= */
 
+/* TOP bar just for title */
 .top-bar {
   display: flex;
   align-items: center;
@@ -44,84 +45,82 @@ body {
   margin-top: 4px;
 }
 
-/* ============= MAIN AREA ============= */
-
+/* Wrapper around shelf + labels */
 .main-area {
   min-height: calc(100vh - 80px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding: 0 16px 40px;
+  padding: 16px 16px 40px;
 }
 
 .shelf-wrapper {
   width: 100%;
   max-width: 1360px;
-  display: flex;
-  justify-content: center;
+  margin-top: 24px;
 }
 
-/* ============= BOOKSHELF ============= */
-
-/* Big wooden rectangle – no rounded corners, no big card shadow */
-.bookshelf-frame {
-  width: 100%;
-  position: relative;
-  margin-top: 40px;
-  border: 16px solid #6b3410;
-  border-radius: 4px;
-  background-color: #2a1407;
-  /* subtle top-bottom gradient so it looks like a real piece of wood */
-  background-image: linear-gradient(
-    to bottom,
-    #2f1608 0%,
-    #281005 40%,
-    #281005 60%,
-    #211006 100%
-  );
-  padding: 18px 32px 32px;
-}
-
-/* Telegram (left) + Sold (right) exactly at top of shelf */
-.shelf-top {
+/* Row ABOVE the shelf box – matches your mock */
+.shelf-header-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  font-size: 15px;
-  color: #fbd89c;
-  margin-bottom: 12px;
+  align-items: center;
+  margin: 0 32px 4px;
+  font-size: 16px;
 }
 
-.shelf-telegram {
+.shelf-header-left,
+.shelf-header-right {
+  color: #111;
+}
+
+.shelf-header-left {
   text-decoration: none;
-  color: inherit;
 }
 
-.shelf-telegram:hover {
+.shelf-header-left:hover {
   text-decoration: underline;
 }
 
-.shelf-sold {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.45);
+/* ============= BOOKSHELF BOX ============= */
+
+.bookshelf-frame {
+  width: 100%;
+  border: 16px solid #6b3410;
+  border-radius: 4px;
+  background-color: #321607;
+  background-image:
+    /* vertical columns */
+    repeating-linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.25) 0px,
+      rgba(0, 0, 0, 0.25) 3px,
+      transparent 3px,
+      transparent 120px
+    ),
+    /* subtle wood grain */
+    linear-gradient(to bottom, #3b1808 0%, #2a1006 50%, #230d05 100%);
+  background-blend-mode: soft-light;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55);
+  padding: 20px 32px 28px;
+  min-height: 70vh; /* extend shelf downwards */
 }
 
-#bookshelf {
+.bookshelf {
   width: 100%;
 }
 
-/* One physical shelf row */
+/* Each shelf row */
 .shelf-row {
   display: flex;
   justify-content: space-around;
-  align-items: flex-end; /* books sit on plank */
-  min-height: 190px;
-  padding: 26px 8px 22px;
+  align-items: flex-end;
+  min-height: 210px;
+  padding: 26px 10px 24px;
   position: relative;
 }
 
-/* Wooden planks between rows – strong, like your mockup */
+/* Strong wooden plank between rows */
 .shelf-row::after {
   content: "";
   position: absolute;
@@ -135,9 +134,9 @@ body {
     rgba(255, 255, 255, 0.18),
     rgba(0, 0, 0, 0.4)
   );
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Do NOT draw a plank after the last shelf: */
 .shelf-row:last-child::after {
   display: none;
 }
