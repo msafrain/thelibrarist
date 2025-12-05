@@ -106,6 +106,10 @@ body {
       rgba(26, 11, 4, 0.97) 180px
     );
   background-blend-mode: soft-light, normal;
+
+  /* 👇 this line shifts the planks so the book rests on one */
+  background-position: 0 0, 0 66px;
+
   border: 18px solid #5b2b0b;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -123,25 +127,6 @@ body {
   align-items: flex-end;
   min-height: 210px;
   position: relative;
-}
-
-/* EXTRA: solid plank exactly under each row so books "sit" on it */
-.shelf-row::after {
-  content: "";
-  position: absolute;
-  left: -10px;
-  right: -10px;
-  bottom: 0;
-  height: 22px;
-  background: linear-gradient(
-    to bottom,
-    #8b4a1a 0%,
-    #6b3610 40%,
-    #3c1b07 100%
-  );
-  border-radius: 10px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.7);
-  z-index: 0;
 }
 
 /* ============= BOOKS ON SHELF ============= */
