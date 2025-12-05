@@ -7,40 +7,32 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top: centered title + subtitle -->
-  <header class="top-bar">
-    <div class="title-block">
-      <h1 class="site-title">The Librarist</h1>
-      <p class="site-subtitle">The library of used books</p>
-    </div>
+  <!-- Centered title + subtitle -->
+  <header class="hero">
+    <h1 class="site-title">The Librarist</h1>
+    <p class="site-subtitle">The library of used books</p>
   </header>
 
   <main class="main-area">
-    <div class="shelf-wrapper">
-      <!-- This row is OUTSIDE the shelf box, like your mock -->
-      <div class="shelf-header-row">
-        <a
-          href="https://t.me/thelibrarist"
-          target="_blank"
-          class="shelf-header-left"
-        >
+    <section class="shelf-section">
+      <!-- Row ABOVE the shelf (Telegram left, Sold right) -->
+      <div class="shelf-top-row">
+        <a href="https://t.me/thelibrarist" target="_blank" class="shelf-telegram">
           Telegram
         </a>
 
-        <span class="shelf-header-right">
+        <span class="shelf-sold">
           Sold: <span id="sold-count">0</span>
         </span>
       </div>
 
-      <!-- The bookshelf rectangle -->
-      <div class="bookshelf-frame">
-        <div id="bookshelf" class="bookshelf">
-          <!-- rows & books injected by script.js -->
-        </div>
+      <!-- Bookshelf itself -->
+      <div class="bookshelf" id="bookshelf">
+        <!-- shelf rows + books are injected by script.js -->
       </div>
-    </div>
+    </section>
 
-    <!-- Yellow summary hover popup -->
+    <!-- Yellow summary popup -->
     <div id="summary-popup" class="summary-popup hidden">
       <button id="summary-close" class="summary-close-btn">×</button>
       <div class="summary-header">
@@ -49,7 +41,7 @@
       </div>
       <p id="summary-text"></p>
       <p class="summary-note">
-        Tap the book or this card to see photos and details.
+        Tap the book or this card to see photos and more details.
       </p>
     </div>
 
@@ -62,7 +54,7 @@
           <!-- Left page: photos -->
           <div class="book-page book-left">
             <div id="book-images" class="image-scroller">
-              <!-- images go here -->
+              <!-- Images inserted by script.js -->
             </div>
           </div>
 
