@@ -17,9 +17,10 @@ const modalCloseBtn = document.getElementById("modal-close");
 
 let currentBooks = [];
 let hideSummaryTimeout = null;
-let currentSummaryBook = null; // track which book is in the popup
+let currentSummaryBook = null;
 
-/* ====== LOAD DATA ====== */
+/* LOAD DATA */
+
 fetch("books.json")
   .then((res) => res.json())
   .then((data) => {
@@ -31,17 +32,16 @@ fetch("books.json")
     console.error("Error loading books.json", err);
   });
 
-/* ====== RENDER SHELF ====== */
+/* RENDER SHELF */
 
 function renderShelf(books) {
   shelfEl.innerHTML = "";
   const visibleBooks = books.filter((b) => b.status !== "sold");
   const booksPerRow = 4;
-  const minRows = 4; // always show at least 4 shelves
+  const minRows = 3;
 
   let rowEl = null;
 
-  // place real books
   visibleBooks.forEach((book, index) => {
     if (index % booksPerRow === 0) {
       rowEl = document.createElement("div");
@@ -60,19 +60,17 @@ function renderShelf(books) {
     bookEl.appendChild(titleEl);
     rowEl.appendChild(bookEl);
 
-    // Desktop hover
+    // hover / touch summary
     bookEl.addEventListener("mouseenter", () => showSummary(book));
     bookEl.addEventListener("mouseleave", () => hideSummaryDelayed());
-
-    // Touch devices – treat touch like hover
     bookEl.addEventListener("touchstart", () => showSummary(book), {
-      passive: true,
+      passive: true
     });
     bookEl.addEventListener("touchend", () => hideSummaryDelayed(), {
-      passive: true,
+      passive: true
     });
 
-    // Click to "pick up" then open
+    // click to open detail
     bookEl.addEventListener("click", () => {
       bookEl.classList.add("pickup");
       setTimeout(() => {
@@ -82,7 +80,7 @@ function renderShelf(books) {
     });
   });
 
-  // add extra empty rows so the shelf visually stacks downward
+  // ensure at least minRows shelves
   const currentRows = shelfEl.children.length;
   if (currentRows < minRows) {
     for (let i = currentRows; i < minRows; i++) {
@@ -93,14 +91,14 @@ function renderShelf(books) {
   }
 }
 
-/* ====== SOLD COUNTER ====== */
+/* SOLD COUNT */
 
 function updateSoldCount(books) {
   const soldCount = books.filter((b) => b.status === "sold").length;
   soldCountSpan.textContent = soldCount;
 }
 
-/* ====== SUMMARY POPUP ====== */
+/* SUMMARY POPUP */
 
 function showSummary(book) {
   if (hideSummaryTimeout) {
@@ -123,9 +121,7 @@ function closeSummary() {
 }
 
 function hideSummaryDelayed() {
-  hideSummaryTimeout = setTimeout(() => {
-    closeSummary();
-  }, 400);
+  hideSummaryTimeout = setTimeout(closeSummary, 400);
 }
 
 summaryPopup.addEventListener("mouseenter", () => {
@@ -135,24 +131,20 @@ summaryPopup.addEventListener("mouseenter", () => {
   }
 });
 
-summaryPopup.addEventListener("mouseleave", () => {
-  hideSummaryDelayed();
-});
+summaryPopup.addEventListener("mouseleave", hideSummaryDelayed);
 
-// Clicking the yellow card opens the book
+// click card opens book
 summaryPopup.addEventListener("click", () => {
-  if (currentSummaryBook) {
-    openBookDetail(currentSummaryBook);
-  }
+  if (currentSummaryBook) openBookDetail(currentSummaryBook);
 });
 
-// Close button only closes, doesn't trigger the open-book click
+// close button just closes
 summaryCloseBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   closeSummary();
 });
 
-/* ====== OPEN BOOK MODAL ====== */
+/* OPEN BOOK MODAL */
 
 function openBookDetail(book) {
   closeSummary();
@@ -172,35 +164,36 @@ function openBookDetail(book) {
   }
 
   imagesContainer.innerHTML = "";
-  (book.images || []).forEach((src) => {
-    const img = document.createElement("img");
-    img.className = "book-photo";
-    img.src = src;
-    img.alt = book.title;
-    imagesContainer.appendChild(img);
-  });
+  if (book.images && book.images.length > 0) {
+    book.images.forEach((src) => {
+      const img = document.createElement("img");
+      img.className = "book-photo";
+      img.src = src;
+      img.alt = book.title;
+      imagesContainer.appendChild(img);
+    });
+  } else {
+    const p = document.createElement("p");
+    p.className = "no-photo";
+    p.textContent = "No photo added yet.";
+    imagesContainer.appendChild(p);
+  }
 
   bookModal.classList.remove("hidden");
 }
 
-/* ====== CLOSE MODAL ====== */
+/* CLOSE MODAL */
 
 function closeModal() {
   bookModal.classList.add("hidden");
 }
 
-modalCloseBtn.addEventListener("click", () => {
-  closeModal();
-});
+modalCloseBtn.addEventListener("click", closeModal);
 
-// Click outside the open book closes it
 bookModal.addEventListener("click", (e) => {
-  if (e.target === bookModal) {
-    closeModal();
-  }
+  if (e.target === bookModal) closeModal();
 });
 
-// ESC closes both modal and summary
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeModal();
