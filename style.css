@@ -145,7 +145,7 @@ body {
   transition: transform 0.16s ease, box-shadow 0.16s ease;
 
   /* push the book up so it sits in the column, not on the plank */
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 /* hover */
